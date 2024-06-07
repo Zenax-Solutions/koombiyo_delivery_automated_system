@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\FileUpload;
 use App\Filament\Resources\Admin\ProductResource\Pages;
 use App\Filament\Resources\Admin\ProductResource\RelationManagers;
+use App\Models\Branch;
 
 class ProductResource extends Resource
 {
@@ -42,6 +43,14 @@ class ProductResource extends Resource
                         ->searchable()
                         ->preload()
                         ->native(false),
+
+                    Select::make('branch_id')
+                        ->required()
+                        ->label('Branch')
+                        ->options(Branch::all()->pluck('name', 'id'))
+                        ->native(false)
+                        ->live()
+                        ->searchable(),
 
                     TextInput::make('name')
                         ->required()
@@ -84,6 +93,8 @@ class ProductResource extends Resource
 
             ->columns([
                 TextColumn::make('category.name'),
+
+                TextColumn::make('branch.name'),
 
                 TextColumn::make('name'),
 

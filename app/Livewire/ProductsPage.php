@@ -83,9 +83,12 @@ class ProductsPage extends Component
         $productsQuery = '';
 
         if ($this->search !== '') {
-            $productsQuery = Product::where('name', 'like', '%' . $this->search . '%')->paginate(10);
+            $productsQuery = Product::where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('branch_id', $this->branch->id)
+                ->paginate(10);
         } else {
-            $productsQuery = Product::paginate(10);
+            $productsQuery = Product::where('branch_id', $this->branch->id)
+                ->paginate(10);
         }
 
         $this->cartData = Session::get('cart');
