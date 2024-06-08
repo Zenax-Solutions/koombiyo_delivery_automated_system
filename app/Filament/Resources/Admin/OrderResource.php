@@ -116,6 +116,7 @@ class OrderResource extends Resource
                                 Select::make('size')
                                     ->required()
                                     ->options([
+                                        'XS' => 'XS',
                                         'S' => 'S',
                                         'M' => 'M',
                                         'L' => 'L',
