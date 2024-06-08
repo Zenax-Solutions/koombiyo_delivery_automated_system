@@ -74,6 +74,7 @@ class ProductResource extends Resource
                         ->label('Size Variations')
                         ->multiple()
                         ->options([
+                            'XS' => 'XS',
                             'S' => 'S',
                             'M' => 'M',
                             'L' => 'L',
