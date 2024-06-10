@@ -22,6 +22,19 @@
             .waybill {
                 page-break-before: always;
             }
+
+            .waybill-header h1,
+            .waybill-header p,
+            .waybill-content div,
+            .waybill-content div label,
+            .waybill-content div span,
+            .cod,
+            .note,
+            .waybill-footer p {
+                font-size: auto;
+                /* Adjust font size for print */
+            }
+
         }
 
         .box {
