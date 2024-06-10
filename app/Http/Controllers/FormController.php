@@ -53,7 +53,7 @@ class FormController extends Controller
         $records = Session::get('bulkwaybill_records');
 
         if ($records != null) {
-            return view('pages.bulk_waybill', compact('records'));
+            return view('pages.bulk_new_waybill', compact('records'));
         } else {
             return redirect()->back();
         }

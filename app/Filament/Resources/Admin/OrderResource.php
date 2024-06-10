@@ -52,8 +52,7 @@ class OrderResource extends Resource
                     Select::make('branch_id')
                         ->required()
                         ->relationship('branch', 'name')
-                        ->searchable()
-                        ->preload()
+                        ->live()
                         ->native(false),
 
                     TextInput::make('waybill_id')
@@ -106,10 +105,24 @@ class OrderResource extends Resource
                         ->schema([
                             Grid::make(['default' => 0])->schema([
 
+                                Select::make('branch_id')
+                                    ->required()
+                                    ->relationship('branch', 'name')
+                                    ->live()
+                                    ->native(false),
+
                                 Select::make('product_id')
                                     ->required()
                                     ->label('Product')
-                                    ->options(Product::all()->pluck('name', 'id'))
+                                    ->options((function (callable $get) {
+
+                                        $product = Product::where('branch_id', $get('branch_id'))->get();
+
+                                        if ($product) {
+                                            return $product->pluck('name', 'id');
+                                        }
+                                        return Product::all()->pluck('name', 'id');
+                                    }))
                                     ->native(false)
                                     ->searchable(),
 
