@@ -53,4 +53,26 @@ class koombiyoApi
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
     }
+
+    //Add Order to koombiyo
+
+    public function addOrder($data)
+    {
+        dd($data);
+
+        $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Addorders/users', $data);
+
+        if ($response->successful()) {
+            // No sequences available at all
+            return  Notification::make()
+                ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
+                ->success()
+                ->send();
+        }
+
+        return Notification::make()
+            ->title('Error Adding to Koombiyo System ❌')
+            ->danger()
+            ->send();
+    }
 }
