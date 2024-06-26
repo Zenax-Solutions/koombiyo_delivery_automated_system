@@ -19,7 +19,6 @@ class CreateOrder extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        dd($data);
 
         foreach ($data['description'] as $key => $value) {
             $this->cart[$value['product_id']] = [
