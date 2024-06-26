@@ -90,7 +90,7 @@ class OrderResource extends Resource
                             if ($city) {
                                 $city->pluck('district_name', 'district_id');
                                 if ($city != null) {
-                                    return $city;
+                                    return $city->pluck('district_name', 'district_id');
                                 } else {
                                     return [];
                                 }
