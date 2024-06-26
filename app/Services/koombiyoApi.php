@@ -47,7 +47,8 @@ class koombiyoApi
         ]);
 
         if ($response->successful()) {
-            return $response->body();
+            $cities = $response->json();
+            return collect($cities);
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());

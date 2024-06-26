@@ -91,7 +91,7 @@ class OrderResource extends Resource
                                 return $city->pluck('district_name', 'district_id');
                             }
 
-                            return null;
+                            return [];
                         }))
                         ->native(false)
                         ->searchable(),
