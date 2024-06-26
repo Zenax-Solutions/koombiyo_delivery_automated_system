@@ -51,7 +51,7 @@ class CreateOrder extends CreateRecord
                 'receiverName' => $data['receiver_name'],
                 'receiverStreet' => $data['delivery_address'],
                 'receiverDistrict' => $data['district_id'],
-                'receiverCity' => $data['city_id'],
+                'receiverCity' => '684',
                 'receiverPhone' => $data['receiver_phone'],
                 'description' => rtrim($this->description, ', '),
                 'spclNote' => '',
