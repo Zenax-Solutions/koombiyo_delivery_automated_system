@@ -31,8 +31,9 @@ use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Set;
 
-use function PHPSTORM_META\elementType;
+
 
 class OrderResource extends Resource
 {
@@ -55,23 +56,21 @@ class OrderResource extends Resource
                         ->required()
                         ->relationship('branch', 'name')
                         ->live()
+                        ->afterStateUpdated(function (Set $set, ?string $state, callable $get, koombiyoApi $koombiyo) {
+                            if ($state) {
+                                $branch = Branch::find($state);
+                                if (isset($branch->api_key) && $branch->api_enable == true) {
+
+                                    $waybillId = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
+
+                                    $set('waybill_id', $waybillId);
+                                }
+                            }
+                        })
                         ->native(false),
 
                     TextInput::make('waybill_id')
                         ->nullable()
-                        ->formatStateUsing(function ($state, callable $get, koombiyoApi $koombiyo) {
-                            $branchId = $get('branch_id');
-
-                            if ($branchId) {
-                                $branch = Branch::find($branchId);
-                                if (isset($branch->api_key) && $branch->api_enable == true) {
-
-                                    return $state = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
-                                } else {
-                                    return $state = null;
-                                }
-                            }
-                        })
                         ->string(),
 
                     TextInput::make('receiver_name')
