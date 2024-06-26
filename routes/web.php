@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 Route::get('/testapi', function (koombiyoApi $koombiyoApi) {
 
-    dd($koombiyoApi->getAllAllocatedBarcodes(), $koombiyoApi->getAllDistrict(), $koombiyoApi->getAllCities());
+    dd($koombiyoApi->getAllAllocatedBarcodes(), $koombiyoApi->getAllDistrict());
 });
 
 Route::get('/order-form/{branch}', [FormController::class, 'view'])->name('order-form');

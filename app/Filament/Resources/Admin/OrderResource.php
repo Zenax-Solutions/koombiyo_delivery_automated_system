@@ -18,6 +18,7 @@ use App\Models\City;
 use App\Models\District;
 use Filament\Tables\Columns\ViewColumn;
 use App\Models\Product;
+use App\Services\koombiyoApi;
 use App\Services\WaybillNumberGenerator;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
@@ -46,6 +47,8 @@ class OrderResource extends Resource
     public static function form(Form $form): Form
     {
 
+        $koombiyo  = new koombiyoApi;
+
         return $form->schema([
             Section::make()->schema([
                 Grid::make(['default' => 1])->schema([
@@ -72,7 +75,7 @@ class OrderResource extends Resource
                     Select::make('district_id')
                         ->required()
                         ->label('District')
-                        ->options(District::all()->pluck('name_en', 'id'))
+                        ->options($koombiyo->getAllDistrict()->pluck('district_name', 'district_id'))
                         ->native(false)
                         ->live()
                         ->searchable(),

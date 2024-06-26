@@ -37,11 +37,11 @@ class koombiyoApi
     }
 
     //get all cities
-    public function getAllCities()
+    public function getAllCities($districtId)
     {
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Cities/users', [
             'apikey' => 'qrxirttTJHVomNMaWaOR',
-            'district_id' => '1',
+            'district_id' => $districtId,
         ]);
 
         if ($response->successful()) {
