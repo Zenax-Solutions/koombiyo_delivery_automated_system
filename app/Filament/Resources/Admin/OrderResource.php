@@ -73,6 +73,7 @@ class OrderResource extends Resource
 
                     TextInput::make('waybill_id')
                         ->nullable()
+                        ->lazy()
                         ->string(),
 
                     TextInput::make('receiver_name')
