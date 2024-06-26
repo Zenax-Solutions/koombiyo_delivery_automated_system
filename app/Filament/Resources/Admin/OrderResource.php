@@ -112,10 +112,11 @@ class OrderResource extends Resource
                         ->options((function (callable $get, koombiyoApi $koombiyo) {
 
                             $branchId = $get('branch_id');
+                            $district = $get('district_id');
 
                             if ($branchId) {
                                 $branch = Branch::find($branchId);
-                                $district = $get('district_id');
+
                                 if (isset($branch->api_key) && $branch->api_enable == true) {
 
                                     if ($district != null) {
