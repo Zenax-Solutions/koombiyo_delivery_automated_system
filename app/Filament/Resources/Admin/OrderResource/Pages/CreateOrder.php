@@ -36,6 +36,7 @@ class CreateOrder extends CreateRecord
         }
 
         $data['description'] = $this->cart;
+        $data['order_number'] = $data['waybill_id'];
 
 
         $branch = Branch::find($data['branch_id']);
@@ -47,7 +48,7 @@ class CreateOrder extends CreateRecord
             $koombiyoData = [
                 'apikey' => $branch->api_key,
                 'orderWaybillid' => $data['waybill_id'],
-                'orderNo' => $data['id'],
+                'orderNo' => $data['waybill_id'],
                 'receiverName' => $data['receiver_name'],
                 'receiverStreet' => $data['delivery_address'],
                 'receiverDistrict' => $data['district_id'],

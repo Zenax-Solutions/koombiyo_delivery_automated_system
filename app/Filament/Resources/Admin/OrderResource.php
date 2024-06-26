@@ -226,11 +226,11 @@ class OrderResource extends Resource
 
                 TextColumn::make('waybill_id')->label('Waybill Id')->searchable(),
 
-                TextColumn::make('id')->label('Order Number')->searchable(),
+                TextColumn::make('order_number')->label('Order Number')->searchable(),
 
                 TextColumn::make('receiver_name')->label('Receiver Name')->searchable(),
 
-                TextColumn::make('delivery_address')->label('Delivery Address')->searchable(),
+                TextColumn::make('delivery_address')->label('Delivery Address'),
 
                 TextColumn::make('district.name_en')->label('District'),
 
