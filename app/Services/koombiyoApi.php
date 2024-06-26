@@ -16,7 +16,8 @@ class koombiyoApi
         ]);
 
         if ($response->successful()) {
-            return $response->body();
+            $barcode = $response->json();
+            return collect($barcode);
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
@@ -30,7 +31,8 @@ class koombiyoApi
         ]);
 
         if ($response->successful()) {
-            return $response->body();
+            $districts = $response->json();
+            return collect($districts);
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
