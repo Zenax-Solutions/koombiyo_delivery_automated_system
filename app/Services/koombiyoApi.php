@@ -41,6 +41,7 @@ class koombiyoApi
     {
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Cities/users', [
             'apikey' => 'qrxirttTJHVomNMaWaOR',
+            'district_id' => '1',
         ]);
 
         if ($response->successful()) {
