@@ -59,16 +59,16 @@ class OrderResource extends Resource
 
                     TextInput::make('waybill_id')
                         ->nullable()
-                        ->formatStateUsing(function (callable $get, $state, koombiyoApi $koombiyo) {
+                        ->formatStateUsing(function ($state, callable $get, koombiyoApi $koombiyo) {
                             $branchId = $get('branch_id');
 
                             if ($branchId) {
                                 $branch = Branch::find($branchId);
                                 if (isset($branch->api_key) && $branch->api_enable == true) {
 
-                                    $state = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
+                                    return $state = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
                                 } else {
-                                    $state = null;
+                                    return $state = null;
                                 }
                             }
                         })
