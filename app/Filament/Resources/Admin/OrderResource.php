@@ -83,9 +83,9 @@ class OrderResource extends Resource
                     Select::make('city_id')
                         ->label('City')
                         ->required()
-                        ->options((function (callable $get, $koombiyo) {
+                        ->options((function (callable $get, koombiyoApi $koombiyo) {
 
-                            $city = $koombiyo->getAllCities(1);
+                            $city = $koombiyo->getAllCities($get('district_id'));
 
                             if ($city) {
                                 return $city->pluck('district_name', 'district_id');
