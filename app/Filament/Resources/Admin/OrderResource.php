@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Model;
 
-
+use function PHPSTORM_META\elementType;
 
 class OrderResource extends Resource
 {
@@ -88,7 +88,12 @@ class OrderResource extends Resource
                             $city = $koombiyo->getAllCities($get('district_id'));
 
                             if ($city) {
-                                return $city->pluck('district_name', 'district_id');
+                                $city->pluck('district_name', 'district_id');
+                                if ($city != null) {
+                                    return $city;
+                                } else {
+                                    return [];
+                                }
                             }
 
                             return [];
