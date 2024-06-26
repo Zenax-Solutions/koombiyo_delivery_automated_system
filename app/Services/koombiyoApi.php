@@ -58,7 +58,6 @@ class koombiyoApi
 
     public function addOrder($data)
     {
-        dd($data);
 
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Addorders/users', $data);
 

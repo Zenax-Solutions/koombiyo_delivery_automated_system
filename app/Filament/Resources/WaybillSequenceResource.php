@@ -69,6 +69,11 @@ class WaybillSequenceResource extends Resource
         ];
     }
 
+    public static function canViewAny(): bool
+    {
+        return false;
+    }
+
     public static function getPages(): array
     {
         return [

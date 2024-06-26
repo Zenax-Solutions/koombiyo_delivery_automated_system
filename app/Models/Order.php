@@ -20,33 +20,33 @@ class Order extends Model
     ];
 
 
-    protected static function booted()
-    {
-        static::creating(function ($order) {
-            // Check if the sequence table is empty
-            if (WaybillSequence::count() == 0) {
-                Notification::make()
-                    ->title('No waybill number available. Please add a new sequence.')
-                    ->danger()
-                    ->send();
-            }
+    // protected static function booted()
+    // {
+    //     static::creating(function ($order) {
+    //         // Check if the sequence table is empty
+    //         if (WaybillSequence::count() == 0) {
+    //             Notification::make()
+    //                 ->title('No waybill number available. Please add a new sequence.')
+    //                 ->danger()
+    //                 ->send();
+    //         }
 
-            // Generate the waybill number if sequences exist
-            $waybillNumber = WaybillNumberGenerator::generate();
+    //         // Generate the waybill number if sequences exist
+    //         $waybillNumber = WaybillNumberGenerator::generate();
 
-            if ($waybillNumber === null) {
+    //         if ($waybillNumber === null) {
 
-                Notification::make()
-                    ->title('No waybill number available. Please add a new sequence.')
-                    ->danger()
-                    ->send();
+    //             Notification::make()
+    //                 ->title('No waybill number available. Please add a new sequence.')
+    //                 ->danger()
+    //                 ->send();
 
-                //throw new \Exception('No waybill number available. Please add a new sequence.');
-            }
+    //             //throw new \Exception('No waybill number available. Please add a new sequence.');
+    //         }
 
-            $order->waybill_id = $waybillNumber;
-        });
-    }
+    //         $order->waybill_id = $waybillNumber;
+    //     });
+    // }
 
 
     public function branch()
