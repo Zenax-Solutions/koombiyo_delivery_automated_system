@@ -11,8 +11,8 @@ class koombiyoApi
     public function getAllAllocatedBarcodes($apikey)
     {
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Waybils/users', [
-            'apikey' => 'qrxirttTJHVomNMaWaOR',
-            'limit' => $apikey,
+            'apikey' => $apikey,
+            'limit' => 1,
         ]);
 
         if ($response->successful()) {
