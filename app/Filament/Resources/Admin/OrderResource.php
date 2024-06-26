@@ -64,6 +64,8 @@ class OrderResource extends Resource
                                     $waybillId = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
 
                                     $set('waybill_id', $waybillId['waybills'][0]['waybill_id']);
+                                } else {
+                                    $set('waybill_id', null);
                                 }
                             }
                         })
