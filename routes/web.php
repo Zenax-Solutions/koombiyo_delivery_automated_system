@@ -1,12 +1,18 @@
 <?php
 
 use App\Http\Controllers\FormController;
+use App\Services\koombiyoApi;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('/', function(){
-    
+Route::get('/', function () {
+
     return redirect('/admin');
+});
+
+Route::get('/testapi', function (koombiyoApi $koombiyoApi) {
+
+    dd($koombiyoApi->getAllAllocatedBarcodes());
 });
 
 Route::get('/order-form/{branch}', [FormController::class, 'view'])->name('order-form');

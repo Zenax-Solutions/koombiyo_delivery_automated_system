@@ -22,6 +22,8 @@ use App\Filament\Resources\Admin\BranchResource\Pages;
 use App\Filament\Resources\Admin\BranchResource\RelationManagers;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Set;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\ToggleColumn;
 
 class BranchResource extends Resource
 {
@@ -64,6 +66,15 @@ class BranchResource extends Resource
                         ->string()
                         ->nullable()
                         ->fileAttachmentsVisibility('public'),
+
+                    TextInput::make('api_key')
+                        ->string()
+                        ->placeholder('add koombiyo api key here')
+                        ->autofocus(),
+
+                    Toggle::make('api_enable')
+                        ->onColor('success')
+                        ->offColor('danger')
                 ]),
             ]),
         ]);
@@ -80,6 +91,8 @@ class BranchResource extends Resource
                 TextColumn::make('address')->limit(255)->html(),
 
                 TextColumn::make('contact_details')->limit(255)->html(),
+
+                ToggleColumn::make('api_enable')
             ])
             ->filters([])
             ->actions([
