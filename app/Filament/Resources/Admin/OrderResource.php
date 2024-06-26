@@ -14,6 +14,7 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\Admin\OrderResource\Pages;
+use App\Models\Branch;
 use App\Models\City;
 use App\Models\District;
 use Filament\Tables\Columns\ViewColumn;
@@ -47,8 +48,6 @@ class OrderResource extends Resource
     public static function form(Form $form): Form
     {
 
-        $koombiyo  = new koombiyoApi;
-
         return $form->schema([
             Section::make()->schema([
                 Grid::make(['default' => 1])->schema([
@@ -60,6 +59,19 @@ class OrderResource extends Resource
 
                     TextInput::make('waybill_id')
                         ->nullable()
+                        ->formatStateUsing(function (callable $get, $state, koombiyoApi $koombiyo) {
+                            $branchId = $get('branch_id');
+
+                            if ($branchId) {
+                                $branch = Branch::find($branchId);
+                                if (isset($branch->api_key) && $branch->api_enable == true) {
+
+                                    $state = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
+                                } else {
+                                    $state = null;
+                                }
+                            }
+                        })
                         ->string(),
 
                     TextInput::make('receiver_name')
@@ -75,7 +87,19 @@ class OrderResource extends Resource
                     Select::make('district_id')
                         ->required()
                         ->label('District')
-                        ->options($koombiyo->getAllDistrict()->pluck('district_name', 'district_id'))
+                        ->options((function (callable $get, koombiyoApi $koombiyo) {
+
+                            $branchId = $get('branch_id');
+                            if ($branchId) {
+                                $branch = Branch::find($branchId);
+
+                                if (isset($branch->api_key) && $branch->api_enable == true) {
+                                    return $koombiyo->getAllDistrict($branch->api_key)->pluck('district_name', 'district_id');
+                                } else {
+                                    return District::all()->pluck('id', 'name_en');
+                                }
+                            }
+                        }))
                         ->native(false)
                         ->live()
                         ->searchable(),
@@ -85,18 +109,23 @@ class OrderResource extends Resource
                         ->required()
                         ->options((function (callable $get, koombiyoApi $koombiyo) {
 
-                            $city = $koombiyo->getAllCities($get('district_id'));
+                            $branchId = $get('branch_id');
 
-                            if ($city) {
-                                $city->pluck('city_name', 'city_id');
-                                if ($city != null) {
-                                    return $city->pluck('city_name', 'city_id');
+                            if ($branchId) {
+                                $branch = Branch::find($branchId);
+                                $district = $get('district_id');
+                                if (isset($branch->api_key) && $branch->api_enable == true) {
+
+                                    if ($district != null) {
+                                        return $koombiyo->getAllCities($branch->api_key, $district)->pluck('city_name', 'city_id');
+                                    } else {
+
+                                        return [];
+                                    }
                                 } else {
-                                    return [];
+                                    return City::where('district_id', $district)->get()->pluck('id', 'name_en');
                                 }
                             }
-
-                            return [];
                         }))
                         ->native(false)
                         ->searchable(),

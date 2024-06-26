@@ -8,11 +8,11 @@ use Filament\Notifications\Notification;
 class koombiyoApi
 {
     //get barcodes
-    public function getAllAllocatedBarcodes()
+    public function getAllAllocatedBarcodes($apikey)
     {
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Waybils/users', [
             'apikey' => 'qrxirttTJHVomNMaWaOR',
-            'limit' => 1,
+            'limit' => $apikey,
         ]);
 
         if ($response->successful()) {
@@ -24,10 +24,10 @@ class koombiyoApi
     }
 
     //get all district
-    public function getAllDistrict()
+    public function getAllDistrict($apikey)
     {
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Districts/users', [
-            'apikey' => 'qrxirttTJHVomNMaWaOR',
+            'apikey' => $apikey,
         ]);
 
         if ($response->successful()) {
@@ -39,10 +39,10 @@ class koombiyoApi
     }
 
     //get all cities
-    public function getAllCities($districtId)
+    public function getAllCities($apikey, $districtId)
     {
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Cities/users', [
-            'apikey' => 'qrxirttTJHVomNMaWaOR',
+            'apikey' => $apikey,
             'district_id' => $districtId,
         ]);
 
