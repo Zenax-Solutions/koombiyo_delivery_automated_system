@@ -85,7 +85,7 @@ class OrderResource extends Resource
                         ->required()
                         ->options((function (callable $get, $koombiyo) {
 
-                            $city = $koombiyo->getAllCities($get('district_id'));
+                            $city = $koombiyo->getAllCities(1);
 
                             if ($city) {
                                 return $city->pluck('district_name', 'district_id');
