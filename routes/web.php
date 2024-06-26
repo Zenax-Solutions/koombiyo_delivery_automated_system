@@ -10,6 +10,14 @@ Route::get('/', function () {
     return redirect('/admin');
 });
 
+Route::get('/testapi', function (koombiyoApi $koombiyoApi) {
+
+
+    $api_key = 'qrxirttTJHVomNMaWaOR';
+
+    dd($koombiyoApi->getAllAllocatedBarcodes($api_key), $koombiyoApi->getAllDistrict($api_key), $koombiyoApi->getAllCities($api_key, 1));
+});
+
 Route::get('/order-form/{branch}', [FormController::class, 'view'])->name('order-form');
 Route::get('/check-out', [FormController::class, 'checkout'])->name('check-out');
 Route::get('/admin/bulk-way-bill', [FormController::class, 'bulk_waybill'])->name('bulkwaybill');
