@@ -88,9 +88,9 @@ class OrderResource extends Resource
                             $city = $koombiyo->getAllCities($get('district_id'));
 
                             if ($city) {
-                                $city->pluck('city_id', 'city_name');
+                                $city->pluck('city_name', 'city_id');
                                 if ($city != null) {
-                                    return $city->pluck('city_id', 'city_name');
+                                    return $city->pluck('city_name', 'city_id');
                                 } else {
                                     return [];
                                 }
