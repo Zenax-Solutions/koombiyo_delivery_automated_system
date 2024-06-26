@@ -83,15 +83,15 @@ class OrderResource extends Resource
                     Select::make('city_id')
                         ->label('City')
                         ->required()
-                        ->options((function (callable $get) {
+                        ->options((function (callable $get, $koombiyo) {
 
-                            $city = City::where('district_id', $get('district_id'))->get();
+                            $city = $koombiyo->getAllCities($get('district_id'));
 
                             if ($city) {
-                                return $city->pluck('name_en', 'id');
+                                return $city->pluck('district_name', 'district_id');
                             }
 
-                            return City::all()->pluck('name_en', 'id');
+                            return [];
                         }))
                         ->native(false)
                         ->searchable(),
