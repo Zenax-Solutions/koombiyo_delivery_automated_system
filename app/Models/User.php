@@ -60,7 +60,7 @@ class User extends Authenticatable
     public function toBroadcast(User $notifiable): BroadcastMessage
     {
         return Notification::make()
-            ->title('Saved successfully')
+            ->title('New Order Received 🛍️🔥')
             ->getBroadcastMessage();
     }
 }

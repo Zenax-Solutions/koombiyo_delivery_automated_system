@@ -70,8 +70,7 @@ class koombiyoApi
             return Notification::make()
                 ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
                 ->success()
-                ->send()
-                ->sendToDatabase($recipient);
+                ->sendToDatabase($recipient)->toBroadcast($recipient);
         }
 
         return Notification::make()
