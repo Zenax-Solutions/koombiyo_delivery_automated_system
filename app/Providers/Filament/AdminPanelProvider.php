@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->databaseNotifications()
             ->passwordReset()
             ->plugins([
                 \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make(),
@@ -43,8 +44,6 @@ class AdminPanelProvider extends PanelProvider
                 FilamentSettingsPlugin::make()
                     ->pages([])
             ])
-            ->databaseTransactions()
-            ->databaseNotifications()
             ->maxContentWidth('full')
             ->colors([
                 'primary' => Color::Rose,
@@ -54,7 +53,6 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->databaseNotifications()
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
 

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Notifications\Notification;
+use Filament\Notifications\Livewire\DatabaseNotifications;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class User extends Authenticatable
 {
@@ -52,5 +54,13 @@ class User extends Authenticatable
         return Notification::make()
             ->title('Saved successfully')
             ->getDatabaseMessage();
+    }
+
+
+    public function toBroadcast(User $notifiable): BroadcastMessage
+    {
+        return Notification::make()
+            ->title('Saved successfully')
+            ->getBroadcastMessage();
     }
 }
