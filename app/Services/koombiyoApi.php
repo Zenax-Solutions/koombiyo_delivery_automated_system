@@ -63,15 +63,12 @@ class koombiyoApi
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Addorders/users', $data);
 
         if ($response->successful()) {
-            // No sequences available at all
-            $recipient = auth()->user();
 
             return Notification::make()
                 ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
                 ->success()
                 ->send()
-                ->title('Saved successfully')
-                ->sendToDatabase($recipient);
+                ->toDatabase();
         }
 
         return Notification::make()
