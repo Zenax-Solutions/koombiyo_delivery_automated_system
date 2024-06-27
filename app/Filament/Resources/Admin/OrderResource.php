@@ -233,9 +233,9 @@ class OrderResource extends Resource
 
                 TextColumn::make('delivery_address')->label('Delivery Address'),
 
-                TextColumn::make('district.name_en')->label('District'),
+                // TextColumn::make('district.name_en')->label('District'),
 
-                TextColumn::make('city.name_en')->label('City'),
+                // TextColumn::make('city.name_en')->label('City'),
 
                 TextColumn::make('receiver_phone')->label('Receiver Phone')->searchable(),
 
