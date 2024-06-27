@@ -74,7 +74,8 @@ class koombiyoApi
                     ->success()
                     ->duration(5000)
                     ->send()
-                    ->toBroadcast(),
+                    ->sendToDatabase($recipient)
+                    ->toBroadcast()
             );
         }
 
