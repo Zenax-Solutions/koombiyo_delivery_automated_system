@@ -64,19 +64,14 @@ class koombiyoApi
 
         if ($response->successful()) {
             // No sequences available at all
-
-
             $recipient = auth()->user();
 
-            return $recipient->notify(
-                Notification::make()
-                    ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
-                    ->success()
-                    ->duration(5000)
-                    ->send()
-                    ->sendToDatabase($recipient)
-                    ->toBroadcast()
-            );
+            return Notification::make()
+                ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
+                ->success()
+                ->send()
+                ->title('Saved successfully')
+                ->sendToDatabase($recipient);
         }
 
         return Notification::make()
