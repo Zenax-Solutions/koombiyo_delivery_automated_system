@@ -67,14 +67,16 @@ class koombiyoApi
 
             $recipient = auth()->user();
 
-            return $recipient->notify(
-                Notification::make()
-                    ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
-                    ->success()
-                    ->send()
-                    ->toDatabase()
-
-            );
+            return  Notification::make()
+                ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
+                ->success()
+                ->actions([
+                    Action::make('view')
+                        ->button()
+                        ->markAsRead(),
+                ])
+                ->send()
+                ->sendToDatabase($recipient);
         }
 
         return Notification::make()
