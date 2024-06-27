@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\koombiyoApi;
 use Livewire\Component;
 
 class CheckoutPage extends Component
@@ -49,6 +50,9 @@ class CheckoutPage extends Component
 
     public function placeOrder()
     {
+
+        $branch = Branch::where('slug', session()->get('slug'))->firstOrFail();
+
         // Validate input
         $this->validate([
             'name' => 'required|string|max:255',
@@ -60,18 +64,60 @@ class CheckoutPage extends Component
 
         // Logic to place order
 
-        Order::create([
-            'branch_id' => Branch::where('slug', session()->get('slug'))->firstOrFail()->id,
-            'waybill_id' => '',
-            'order_number' => '',
-            'receiver_name' => $this->name,
-            'delivery_address' => $this->address,
-            'district_id' => $this->district,
-            'city_id' => $this->city,
-            'receiver_phone' => $this->primaryContact,
-            'cod' => $this->totalPrice + env('DELIVERY_CHARGES', 0),
-            'description' => $this->cart,
-        ]);
+
+        if (isset($branch->api_key) && $branch->api_enable == true) {
+
+
+            $koombiyoApi = new koombiyoApi;
+
+            $orderWaybillid = $koombiyoApi->getAllAllocatedBarcodes($branch->api_key);
+
+
+            $koombiyoData = [
+                'apikey' => $branch->api_key,
+                'orderWaybillid' => $orderWaybillid,
+                'orderNo' => $orderWaybillid,
+                'receiverName' => $this->name,
+                'receiverStreet' => $this->address,
+                'receiverDistrict' => $this->district,
+                'receiverCity' => $this->city,
+                'receiverPhone' => $this->primaryContact,
+                'description' => rtrim($this->productDataTrim(), ', '),
+                'spclNote' => '',
+                'getCod' => $this->totalPrice + env('DELIVERY_CHARGES', 0),
+            ];
+
+
+            Order::create([
+                'branch_id' => $branch->id,
+                'waybill_id' => $orderWaybillid,
+                'order_number' => $orderWaybillid,
+                'receiver_name' => $this->name,
+                'delivery_address' => $this->address,
+                'district_id' => $this->district,
+                'city_id' => $this->city,
+                'receiver_phone' => $this->primaryContact,
+                'cod' => $this->totalPrice + env('DELIVERY_CHARGES', 0),
+                'description' => $this->cart,
+            ]);
+
+
+            $koombiyoApi->addOrder($koombiyoData);
+        } else {
+            Order::create([
+                'branch_id' => $branch->id,
+                'waybill_id' => '',
+                'order_number' => '',
+                'receiver_name' => $this->name,
+                'delivery_address' => $this->address,
+                'district_id' => $this->district,
+                'city_id' => $this->city,
+                'receiver_phone' => $this->primaryContact,
+                'cod' => $this->totalPrice + env('DELIVERY_CHARGES', 0),
+                'description' => $this->cart,
+            ]);
+        }
+
 
         // Clear cart
         session()->forget('cart');
@@ -85,6 +131,23 @@ class CheckoutPage extends Component
         $this->redirect('/thank-you');
     }
 
+
+    public function productDataTrim()
+    {
+        foreach ($this->cart as $key => $value) {
+            $this->cart[$value['product_id']] = [
+                'product_id' => $value['product_id'],
+                'size' => $value['size'],
+                'quantity' => $value['quantity'],
+            ];
+
+            $product = Product::find($value['product_id']);
+
+            if ($product) {
+                return $product->name . ' (' . $value['size'] . ') X ' . $value['quantity'] . ', ';
+            }
+        }
+    }
 
     public function render()
     {
@@ -101,9 +164,23 @@ class CheckoutPage extends Component
             $this->redirect('/order-form' . '/' . session()->get('slug'));
         }
 
-        $this->districtList = District::all();
 
-        $this->cityList = City::where('district_id', $this->district)->get();
+        $branch = Branch::where('slug', session()->get('slug'))->firstOrFail();
+
+        if (isset($branch->api_key) && $branch->api_enable == true) {
+
+            $koombiyoApi = new koombiyoApi;
+
+            $this->districtList = $koombiyoApi->getAllDistrict($branch->api_key);
+
+            $this->cityList = $koombiyoApi->getAllCities($branch->api_key, $this->district);
+        } else {
+            $this->districtList = District::all();
+
+            $this->cityList = City::where('district_id', $this->district)->get();
+        }
+
+
 
         return view('livewire.checkout-page');
     }

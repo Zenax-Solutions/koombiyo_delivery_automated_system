@@ -97,10 +97,11 @@ class OrderResource extends Resource
 
                                 if (isset($branch->api_key) && $branch->api_enable == true) {
                                     return $koombiyo->getAllDistrict($branch->api_key)->pluck('district_name', 'district_id');
+                                } else {
+                                    return District::all()->pluck('name_en', 'id');
                                 }
                             }
-                        }
-                        ))
+                        }))
                         ->native(false)
                         ->live()
                         ->searchable(),
@@ -120,7 +121,12 @@ class OrderResource extends Resource
 
                                     if ($district != null) {
                                         return $koombiyo->getAllCities($branch->api_key, $district)->pluck('city_name', 'city_id');
+                                    } else {
+
+                                        return [];
                                     }
+                                } else {
+                                    return City::where('district_id', $district)->pluck('name_en', 'id');
                                 }
                             }
                         }))
