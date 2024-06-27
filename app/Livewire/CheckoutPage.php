@@ -24,6 +24,8 @@ class CheckoutPage extends Component
 
     public $districtList, $cityList;
 
+    public $branch;
+
     public function mount()
     {
         $this->cart = session()->get('cart', []);
@@ -165,15 +167,15 @@ class CheckoutPage extends Component
         }
 
 
-        $branch = Branch::where('slug', session()->get('slug'))->firstOrFail();
+        $this->branch = Branch::where('slug', session()->get('slug'))->firstOrFail();
 
-        if (isset($branch->api_key) && $branch->api_enable == true) {
+        if (isset($this->branch->api_key) && $thsi->branch->api_enable == true) {
 
             $koombiyoApi = new koombiyoApi;
 
-            $this->districtList = $koombiyoApi->getAllDistrict($branch->api_key);
+            $this->districtList = $koombiyoApi->getAllDistrict($this->branch->api_key);
 
-            $this->cityList = $koombiyoApi->getAllCities($branch->api_key, $this->district);
+            $this->cityList = $koombiyoApi->getAllCities($this->branch->api_key, $this->district);
         } else {
             $this->districtList = District::all();
 
