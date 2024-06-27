@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Filament\Notifications\Notification;
+use Filament\Notifications\Actions\Action;
 
 class koombiyoApi
 {
@@ -66,7 +67,12 @@ class koombiyoApi
             return  Notification::make()
                 ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
                 ->success()
-                ->send();
+                ->actions([
+                    Action::make('view')
+                        ->button()
+                        ->markAsRead(),
+                ])
+                ->toDatabase();
         }
 
         return Notification::make()

@@ -44,6 +44,7 @@ class AdminPanelProvider extends PanelProvider
                     ->pages([])
             ])
             ->databaseTransactions()
+            ->databaseNotifications()
             ->maxContentWidth('full')
             ->colors([
                 'primary' => Color::Rose,
