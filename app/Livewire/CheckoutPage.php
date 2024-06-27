@@ -77,8 +77,8 @@ class CheckoutPage extends Component
 
             $koombiyoData = [
                 'apikey' => $branch->api_key,
-                'orderWaybillid' => $orderWaybillid,
-                'orderNo' => $orderWaybillid,
+                'orderWaybillid' => $orderWaybillid['waybills'][0]['waybill_id'],
+                'orderNo' => $orderWaybillid['waybills'][0]['waybill_id'],
                 'receiverName' => $this->name,
                 'receiverStreet' => $this->address,
                 'receiverDistrict' => $this->district,
@@ -92,8 +92,8 @@ class CheckoutPage extends Component
 
             Order::create([
                 'branch_id' => $branch->id,
-                'waybill_id' => $orderWaybillid,
-                'order_number' => $orderWaybillid,
+                'waybill_id' => $orderWaybillid['waybills'][0]['waybill_id'],
+                'order_number' => $orderWaybillid['waybills'][0]['waybill_id'],
                 'receiver_name' => $this->name,
                 'delivery_address' => $this->address,
                 'district_id' => $this->district,
