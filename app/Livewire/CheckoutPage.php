@@ -169,7 +169,7 @@ class CheckoutPage extends Component
 
         $this->branch = Branch::where('slug', session()->get('slug'))->firstOrFail();
 
-        if (isset($this->branch->api_key) && $thsi->branch->api_enable == true) {
+        if (isset($this->branch->api_key) && $this->branch->api_enable == true) {
 
             $koombiyoApi = new koombiyoApi;
 
