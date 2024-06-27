@@ -52,7 +52,7 @@ class User extends Authenticatable
     public function toDatabase(User $notifiable): array
     {
         return Notification::make()
-            ->title('Saved successfully')
+            ->title('New Order Received 🛍️🔥')
             ->getDatabaseMessage();
     }
 
