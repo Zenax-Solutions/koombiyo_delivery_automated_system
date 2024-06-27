@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
@@ -63,11 +64,14 @@ class koombiyoApi
         $response = Http::asForm()->post('https://application.koombiyodelivery.lk/api/Addorders/users', $data);
 
         if ($response->successful()) {
+            // No sequences available at all
+            $recipient = User::where('email', 'admin@addyourorder.com')->first();
 
             return Notification::make()
                 ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')
                 ->success()
-                ->send();
+                ->send()
+                ->sendToDatabase($recipient);
         }
 
         return Notification::make()
