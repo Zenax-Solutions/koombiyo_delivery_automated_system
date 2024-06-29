@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 
 class koombiyoApi
 {
@@ -34,7 +35,7 @@ class koombiyoApi
 
         if ($response->successful()) {
             $districts = $response->json();
-            return collect($districts);
+            return $districts;
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
@@ -50,7 +51,7 @@ class koombiyoApi
 
         if ($response->successful()) {
             $cities = $response->json();
-            return collect($cities);
+            return $cities;
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
@@ -65,7 +66,7 @@ class koombiyoApi
 
         if ($response->successful()) {
             // No sequences available at all
-            $recipient = User::where('email', 'admin@addyourorder.com')->first();
+            $recipient = Auth::user();
 
             return Notification::make()
                 ->title('Successfully New Order Added to Koombiyo ✅⚡🚚')

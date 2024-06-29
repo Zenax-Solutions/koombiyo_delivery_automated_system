@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\FormController;
+use App\Models\City;
+use App\Models\District;
 use App\Services\koombiyoApi;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -12,8 +14,11 @@ Route::get('/', function () {
 
 Route::get('/testapi', function (koombiyoApi $koombiyoApi) {
 
+    //dd(District::all());
 
-    $api_key = 'qrxirttTJHVomNMaWaOR';
+   //District::truncate();
+
+    $api_key = 'testAPI';
 
     dd($koombiyoApi->getAllAllocatedBarcodes($api_key), $koombiyoApi->getAllDistrict($api_key), $koombiyoApi->getAllCities($api_key, 1));
 });

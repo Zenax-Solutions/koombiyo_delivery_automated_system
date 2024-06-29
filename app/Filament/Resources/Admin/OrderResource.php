@@ -89,19 +89,7 @@ class OrderResource extends Resource
                     Select::make('district_id')
                         ->required()
                         ->label('District')
-                        ->options((function (callable $get, koombiyoApi $koombiyo) {
-
-                            $branchId = $get('branch_id');
-                            if ($branchId) {
-                                $branch = Branch::find($branchId);
-
-                                if (isset($branch->api_key) && $branch->api_enable == true) {
-                                    return $koombiyo->getAllDistrict($branch->api_key)->pluck('district_name', 'district_id');
-                                } else {
-                                    return District::all()->pluck('name_en', 'id');
-                                }
-                            }
-                        }))
+                        ->options(District::all()->pluck('district_name', 'district_id'))
                         ->native(false)
                         ->live()
                         ->searchable(),
@@ -109,26 +97,8 @@ class OrderResource extends Resource
                     Select::make('city_id')
                         ->label('City')
                         ->required()
-                        ->options((function (callable $get, koombiyoApi $koombiyo) {
-
-                            $branchId = $get('branch_id');
-                            $district = $get('district_id');
-
-                            if ($branchId) {
-                                $branch = Branch::find($branchId);
-
-                                if (isset($branch->api_key) && $branch->api_enable == true) {
-
-                                    if ($district != null) {
-                                        return $koombiyo->getAllCities($branch->api_key, $district)->pluck('city_name', 'city_id');
-                                    } else {
-
-                                        return [];
-                                    }
-                                } else {
-                                    return City::where('district_id', $district)->pluck('name_en', 'id');
-                                }
-                            }
+                        ->options((function (callable $get) {
+                            return City::where('district_id', $get('district_id'))->pluck('city_name', 'city_id');
                         }))
                         ->native(false)
                         ->searchable(),

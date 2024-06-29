@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->string('order_number')->nullable();
             $table->string('receiver_name')->nullable();
             $table->string('delivery_address')->nullable();
+            $table->bigInteger('district_id')->unsigned();
+            $table->bigInteger('city_id')->unsigned();
             $table->string('receiver_phone')->nullable();
             $table
                 ->decimal('cod')
