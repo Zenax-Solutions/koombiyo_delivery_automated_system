@@ -78,8 +78,8 @@
                         <from class="flex flex-col">
                             <span id="company-name" class="text-xl text-bold">Recipient Details</span>
                             <span id="person-name" class="text-xl">Name : {{ $data['receiver_name'] }}</span>
-                            <span class="text-xl">District : {{ $data['district']['name_en'] }}</span>
-                            <span class="text-xl">City : {{ $data['city']['name_en'] }}</span>
+                            <span class="text-xl">District : {{ $data['district']['district_name'] }}</span>
+                            <span class="text-xl">City : {{ $data['city']['city_name'] }}</span>
                             <div class="flex lg:flex">
                                 <div id="c-city" class="text-xl">Address : </div>
                                 <div id="c-postal" class="flex ml-2 text-xl">{!! $data['delivery_address'] !!}</div>

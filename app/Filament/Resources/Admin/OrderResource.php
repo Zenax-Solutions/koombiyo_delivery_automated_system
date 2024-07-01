@@ -203,9 +203,9 @@ class OrderResource extends Resource
 
                 TextColumn::make('delivery_address')->label('Delivery Address'),
 
-                // TextColumn::make('district.name_en')->label('District'),
+                TextColumn::make('district.district_name')->label('District'),
 
-                // TextColumn::make('city.name_en')->label('City'),
+                TextColumn::make('city.city_name')->label('City'),
 
                 TextColumn::make('receiver_phone')->label('Receiver Phone')->searchable(),
 
@@ -299,8 +299,8 @@ class OrderResource extends Resource
                         Column::make('id')->heading('Order Number'),
                         Column::make('receiver_name')->heading('Receiver Name'),
                         Column::make('delivery_address')->heading('Delivery Address'),
-                        Column::make('district_id')->heading('District'),
-                        Column::make('city_id')->heading('City'),
+                        Column::make('district.district_name')->heading('District'),
+                        Column::make('city.city_name')->heading('City'),
                         Column::make('receiver_phone')->heading('Receiver Phone'),
                         Column::make('cod')->formatStateUsing(function ($state) {
                             return number_format($state, 2);

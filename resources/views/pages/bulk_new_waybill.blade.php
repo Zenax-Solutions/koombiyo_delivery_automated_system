@@ -139,14 +139,14 @@
                 <div class="box waybill-content">
                     <div>
                         <label>District:</label>
-                        <span>{{ $data['district']['name_en'] }}</span>
+                        <span>{{ $data['district']['district_name'] }}</span>
                     </div>
 
                 </div>
                 <div class="box waybill-content">
                     <div>
                         <label>City:</label>
-                        <span>{{ $data['city']['name_en'] }}</span>
+                        <span>{{ $data['city']['city_name'] }}</span>
                     </div>
                 </div>
             </div>
