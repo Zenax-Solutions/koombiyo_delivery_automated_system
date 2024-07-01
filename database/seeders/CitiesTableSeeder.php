@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Services\koombiyoApi;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ class CitiesTableSeeder extends Seeder
     public function run(): void
     {
         $api_key = 'qrxirttTJHVomNMaWaOR';
-        $koombiyoApi = app('App\Services\KoombiyoApi'); // Assuming you have a service for the API
+        $koombiyoApi = new koombiyoApi; // Assuming you have a service for the API
 
         // Ensure foreign keys are enabled
         DB::statement('PRAGMA foreign_keys=OFF;');
