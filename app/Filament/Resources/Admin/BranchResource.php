@@ -102,6 +102,7 @@ class BranchResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Action::make('Link')
+                    ->copyable()
                     ->copyableState(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-')))
                     ->icon('heroicon-o-clipboard-document')
                     ->color('success'),
