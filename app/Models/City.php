@@ -9,7 +9,7 @@ class City extends Model
 {
     use HasFactory;
 
-    protected $table = 'cities';
+    protected $table = 'city';
 
     protected $guarded = [];
 
