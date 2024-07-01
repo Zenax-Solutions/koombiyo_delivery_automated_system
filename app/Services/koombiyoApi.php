@@ -34,7 +34,7 @@ class koombiyoApi
 
         if ($response->successful()) {
             $districts = $response->json();
-            return collect($districts);
+            return $districts;
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
@@ -50,7 +50,7 @@ class koombiyoApi
 
         if ($response->successful()) {
             $cities = $response->json();
-            return collect($cities);
+            return $cities;
         }
 
         return response()->json(['error' => 'Unable to fetch data'], $response->status());
