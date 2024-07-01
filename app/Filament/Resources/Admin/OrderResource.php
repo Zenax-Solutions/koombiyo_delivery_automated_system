@@ -299,8 +299,8 @@ class OrderResource extends Resource
                         Column::make('id')->heading('Order Number'),
                         Column::make('receiver_name')->heading('Receiver Name'),
                         Column::make('delivery_address')->heading('Delivery Address'),
-                        Column::make('district.district_name')->heading('District'),
-                        Column::make('city.city_name')->heading('City'),
+                        Column::make('district_id')->heading('District'),
+                        Column::make('city_id')->heading('City'),
                         Column::make('receiver_phone')->heading('Receiver Phone'),
                         Column::make('cod')->formatStateUsing(function ($state) {
                             return number_format($state, 2);
