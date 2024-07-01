@@ -86,7 +86,10 @@ class BranchResource extends Resource
             ->columns([
                 ImageColumn::make('logo')->visibility('public'),
 
-                TextColumn::make('name'),
+                TextColumn::make('name')->copyable()
+                    ->copyMessage('Shop Url is copied')
+                    ->copyableState(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-'))),
+
 
                 TextColumn::make('address')->limit(255)->html(),
 
