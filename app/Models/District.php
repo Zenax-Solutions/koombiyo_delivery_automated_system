@@ -13,14 +13,11 @@ class District extends Model
 
     protected $guarded = [];
 
-    public function province()
-    {
-        return $this->belongsTo(Province::class);
-    }
+
 
     public function cities()
     {
-        return $this->hasMany(City::class);
+        return $this->hasMany(City::class, 'district_id', 'district_id');
     }
 
     public function orders()

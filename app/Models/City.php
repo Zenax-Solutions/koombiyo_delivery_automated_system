@@ -15,7 +15,7 @@ class City extends Model
 
     public function district()
     {
-        return $this->belongsTo(District::class);
+        return $this->belongsTo(District::class, 'district_id', 'district_id');
     }
 
     public function orders()
