@@ -86,7 +86,9 @@ class BranchResource extends Resource
             ->columns([
                 ImageColumn::make('logo')->visibility('public'),
 
-                TextColumn::make('name')->copyable()
+                TextColumn::make('name')
+                    ->description('please click to copy the shop link 🔗')
+                    ->copyable()
                     ->copyMessage('Shop Url is copied')
                     ->copyableState(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-'))),
 
@@ -101,11 +103,6 @@ class BranchResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                Action::make('Link')
-                    ->copyable()
-                    ->copyableState(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-')))
-                    ->icon('heroicon-o-clipboard-document')
-                    ->color('success'),
                 Action::make('Navigate to shop')
                     ->url(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-')))
                     ->openUrlInNewTab()
