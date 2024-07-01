@@ -169,18 +169,11 @@ class CheckoutPage extends Component
 
         $this->branch = Branch::where('slug', session()->get('slug'))->firstOrFail();
 
-        if (isset($this->branch->api_key) && $this->branch->api_enable == true) {
+        
+        $this->districtList = District::all();
 
-            $koombiyoApi = new koombiyoApi;
-
-            $this->districtList = $koombiyoApi->getAllDistrict($this->branch->api_key);
-
-            $this->cityList = $koombiyoApi->getAllCities($this->branch->api_key, $this->district);
-        } else {
-            $this->districtList = District::all();
-
-            $this->cityList = City::where('district_id', $this->district)->get();
-        }
+        $this->cityList = City::where('district_id', $this->district)->get();
+        
 
 
 

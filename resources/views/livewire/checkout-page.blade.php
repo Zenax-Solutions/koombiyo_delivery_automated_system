@@ -65,17 +65,11 @@
                     <select wire:model.live="district"
                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                         <option selected>Choose a district</option>
-                        @if (isset($branch->api_key) && $branch->api_enable == true)
-                            @foreach ($districtList as $list)
-                                <option value="{{ $list['district_id'] }}">{{ $list['district_name'] }}</option>
+                    
+                            @foreach ($districtList as $key => $list)
+                                <option value="{{ $list->district_id }}">{{ $list->district_name }}</option>
                             @endforeach
-                        @else
-                            @foreach ($districtList as $list)
-                                <option value="{{ $list->id }}">{{ $list->name_en }}</option>
-                            @endforeach
-                        @endif
-
-
+                
                     </select>
                 </div>
 
@@ -85,16 +79,10 @@
                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                         <option selected>Choose a city</option>
 
-                        @if (isset($branch->api_key) && $branch->api_enable == true)
                             @foreach ($cityList as $list)
-                                <option value="{{ $list['city_id'] }}">{{ $list['city_name'] }}</option>
-                            @endforeach
-                        @else
-                            @foreach ($cityList as $list)
-                                <option value="{{ $list->id }}">{{ $list->name_en }}</option>
+                                <option value="{{ $list->city_id }}">{{ $list->city_name }}</option>
                             @endforeach
 
-                        @endif
                     </select>
                 </div>
 
