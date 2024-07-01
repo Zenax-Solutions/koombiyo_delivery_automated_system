@@ -20,6 +20,6 @@ class City extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'city_id', 'city_id');
     }
 }

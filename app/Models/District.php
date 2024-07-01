@@ -22,6 +22,6 @@ class District extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'district_id', 'district_id');
     }
 }
