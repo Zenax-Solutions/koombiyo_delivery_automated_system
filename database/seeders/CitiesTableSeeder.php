@@ -19,7 +19,7 @@ class CitiesTableSeeder extends Seeder
         $koombiyoApi = new koombiyoApi; // Assuming you have a service for the API
 
         // Ensure foreign keys are enabled
-        DB::statement('PRAGMA foreign_keys=OFF;');
+        //DB::statement('PRAGMA foreign_keys=OFF;');
 
         for ($i = 1; $i <= 25; $i++) {
             $response = $koombiyoApi->getAllCities($api_key, $i);
