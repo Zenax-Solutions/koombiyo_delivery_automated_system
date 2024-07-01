@@ -21,9 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             //DistrictTableSeeder::class,
-           CitiesTableSeeder::class,
+            //CitiesTableSeeder::class,
         ]);
-
-       
     }
 }

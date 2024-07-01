@@ -14,7 +14,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function boot(): void
     {
         Window::open()->width(800)
-        ->height(800);
+            ->height(800)->showDevTools(true)->hideMenu()->route('admin');
     }
 
     /**
@@ -22,7 +22,6 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function phpIni(): array
     {
-        return [
-        ];
+        return [];
     }
 }

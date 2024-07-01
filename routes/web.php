@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
 
-    return redirect('/admin');
-});
+    return view('welcome');
+})->name('admin');
 
 Route::get('/testapi', function (koombiyoApi $koombiyoApi) {
 
     //dd(District::all());
 
-   //District::truncate();
+    //District::truncate();
 
     $api_key = 'testAPI';
 

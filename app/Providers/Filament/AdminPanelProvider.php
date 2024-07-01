@@ -20,11 +20,15 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Illuminate\Support\Facades\URL;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+
+        // URL::forceScheme('https');
+
         return $panel
             ->default()
             ->id('admin')

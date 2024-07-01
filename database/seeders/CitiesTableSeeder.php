@@ -17,20 +17,20 @@ class CitiesTableSeeder extends Seeder
         $api_key = 'qrxirttTJHVomNMaWaOR';
         $koombiyoApi = app('App\Services\KoombiyoApi'); // Assuming you have a service for the API
 
-         // Ensure foreign keys are enabled
-  //  DB::statement('PRAGMA foreign_keys=OFF;');
-        
+        // Ensure foreign keys are enabled
+        DB::statement('PRAGMA foreign_keys=OFF;');
+
         for ($i = 1; $i <= 25; $i++) {
             $response = $koombiyoApi->getAllCities($api_key, $i);
             $cities = $response;
-    
+
             foreach ($cities as $city) {
                 // Check if the city already exists
                 $exists = DB::table('city')
                     ->where('city_id', $city['city_id'])
                     ->where('district_id', $i)
                     ->exists();
-    
+
                 if (!$exists) {
                     // Insert only if the city does not exist
                     DB::table('city')->insert([
