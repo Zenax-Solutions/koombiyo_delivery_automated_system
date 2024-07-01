@@ -101,7 +101,12 @@ class BranchResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                Action::make('Shop Link')
+                Action::make('Link')
+                    ->copyMessage('Shop Url is copied')
+                    ->copyableState(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-')))
+                    ->icon('heroicon-o-clipboard-document')
+                    ->color('success'),
+                Action::make('Navigate to shop')
                     ->url(fn (Branch $record): string => route('order-form', Str::slug($record->name, '-')))
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-link')
