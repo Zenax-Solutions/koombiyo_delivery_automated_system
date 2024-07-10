@@ -76,7 +76,7 @@ class OrderResource extends Resource
                                         $set('waybill_id', $waybillId['waybills'][0]['waybill_id']);
                                     } else {
                                         $set('waybill_id', null);
-                                        $set('waybill_id', self::generateInternalOrderId());
+                                       // $set('waybill_id', self::generateInternalOrderId());
                                     }
                                 }
                                 else
@@ -90,7 +90,6 @@ class OrderResource extends Resource
 
                     TextInput::make('waybill_id')
                         ->nullable()
-                        ->readOnly()
                         ->lazy(),
 
                     TextInput::make('receiver_name')
