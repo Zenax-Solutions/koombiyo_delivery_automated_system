@@ -8,10 +8,14 @@ use App\Filament\Resources\Admin\OrderResource;
 use App\Models\Branch;
 use App\Models\Order;
 use Filament\Resources\Pages\ListRecords\Tab;
+use App\Filament\Traits\HasDescendingOrder;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListOrders extends ListRecords
 {
+
+    use HasDescendingOrder;
+
     protected static string $resource = OrderResource::class;
 
     protected function getHeaderActions(): array

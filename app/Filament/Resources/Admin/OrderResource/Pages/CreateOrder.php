@@ -35,32 +35,37 @@ class CreateOrder extends CreateRecord
         }
 
         $data['description'] = $this->cart;
+        
         $data['order_number'] = $data['waybill_id'];
 
+        if ($data['delivery_type'] == 'outside') {
 
-        $branch = Branch::find($data['branch_id']);
+            $branch = Branch::find($data['branch_id']);
 
-        if (isset($branch->api_key) && $branch->api_enable == true) {
-
-            $koombiyoApi = new koombiyoApi;
-
-            $koombiyoData = [
-                'apikey' => $branch->api_key,
-                'orderWaybillid' => $data['waybill_id'],
-                'orderNo' => $data['waybill_id'],
-                'receiverName' => $data['receiver_name'],
-                'receiverStreet' => $data['delivery_address'],
-                'receiverDistrict' => $data['district_id'],
-                'receiverCity' => $data['city_id'],
-                'receiverPhone' => $data['receiver_phone'],
-                'description' => rtrim($this->description, ', '),
-                'spclNote' => '',
-                'getCod' => $data['cod'],
-            ];
-
-            $koombiyoApi->addOrder($koombiyoData);
+            if (isset($branch->api_key) && $branch->api_enable == true) {
+    
+                $koombiyoApi = new koombiyoApi;
+    
+                $koombiyoData = [
+                    'apikey' => $branch->api_key,
+                    'orderWaybillid' => $data['waybill_id'],
+                    'orderNo' => $data['waybill_id'],
+                    'receiverName' => $data['receiver_name'],
+                    'receiverStreet' => $data['delivery_address'],
+                    'receiverDistrict' => $data['district_id'],
+                    'receiverCity' => $data['city_id'],
+                    'receiverPhone' => $data['receiver_phone'],
+                    'description' => rtrim($this->description, ', '),
+                    'spclNote' => '',
+                    'getCod' => $data['cod'],
+                ];
+    
+                $koombiyoApi->addOrder($koombiyoData);
+            }
         }
-
+      
+      
         return $data;
     }
+
 }

@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Set;
+use Filament\Forms\Components\Textarea;
 
 
 
@@ -52,6 +53,13 @@ class OrderResource extends Resource
         return $form->schema([
             Section::make()->schema([
                 Grid::make(['default' => 1])->schema([
+
+                    Select::make('delivery_type')
+                    ->options([
+                        'internel' => 'Internel 🛵',
+                        'outside' => 'Outside 🚚',
+                    ])->required(),
+
                     Select::make('branch_id')
                         ->required()
                         ->relationship('branch', 'name')
@@ -59,22 +67,31 @@ class OrderResource extends Resource
                         ->afterStateUpdated(function (Set $set, ?string $state, callable $get, koombiyoApi $koombiyo) {
                             if ($state) {
                                 $branch = Branch::find($state);
-                                if (isset($branch->api_key) && $branch->api_enable == true) {
+                                if($get('delivery_type') == 'outside')
+                                {
+                                    if (isset($branch->api_key) && $branch->api_enable == true) {
 
-                                    $waybillId = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
-
-                                    $set('waybill_id', $waybillId['waybills'][0]['waybill_id']);
-                                } else {
-                                    $set('waybill_id', null);
+                                        $waybillId = $koombiyo->getAllAllocatedBarcodes($branch->api_key);
+    
+                                        $set('waybill_id', $waybillId['waybills'][0]['waybill_id']);
+                                    } else {
+                                        $set('waybill_id', null);
+                                        $set('waybill_id', self::generateInternalOrderId());
+                                    }
                                 }
+                                else
+                                {
+                                    $set('waybill_id', self::generateInternalOrderId());
+                                }
+                                
                             }
                         })
                         ->native(false),
 
                     TextInput::make('waybill_id')
                         ->nullable()
-                        ->lazy()
-                        ->string(),
+                        ->readOnly()
+                        ->lazy(),
 
                     TextInput::make('receiver_name')
                         ->nullable()
@@ -172,18 +189,25 @@ class OrderResource extends Resource
                             'pending' => 'Pending',
                             'canceled' => 'Canceled',
                             'dispatched' => 'Dispatched',
+                            'delivered' => 'Delivered',
                         ])
                         ->icons([
                             'pending' => 'heroicon-o-arrow-path',
                             'canceled' => 'heroicon-o-x-mark',
                             'dispatched' => 'heroicon-o-truck',
+                            'delivered' => 'heroicon-o-check-badge',
                         ])
                         ->colors([
                             'pending' => 'danger',
                             'canceled' => 'warning',
-                            'dispatched' => 'success',
+                            'dispatched' => 'primary',
+                            'delivered' => 'success',
                         ])
                         ->label('Order status')->default('pending'),
+
+                    Textarea::make('note'),
+
+                   
                 ]),
             ]),
         ]);
@@ -194,6 +218,15 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('branch.name'),
+
+                TextColumn::make('delivery_type')->searchable()->label('Delivery Type 🛵')->formatStateUsing(function($state)
+                {
+                    return match ($state) {
+                        'internel' => 'Internel 🛵',
+                        'outside' => 'Outside 🚚',
+                    };
+                
+                }),
 
                 TextColumn::make('waybill_id')->label('Waybill Id')->searchable(),
 
@@ -222,8 +255,15 @@ class OrderResource extends Resource
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'danger',
                         'canceled' => 'warning',
-                        'dispatched' => 'success',
+                        'dispatched' => 'primary',
+                        'delivered' => 'success',
+                    })->icon(fn (string $state): string => match ($state) {
+                        'pending' => 'heroicon-o-arrow-path',
+                        'canceled' => 'heroicon-o-x-mark',
+                        'dispatched' => 'heroicon-o-truck',
+                        'delivered' => 'heroicon-o-check-badge',
                     }),
+                TextColumn::make('note')->limit(30)->label('Note 👩‍🦰'),
             ])
             ->filters([
                 DateRangeFilter::make('created_at'),
@@ -233,6 +273,7 @@ class OrderResource extends Resource
                         'pending' => 'Pending',
                         'canceled' => 'Canceled',
                         'dispatched' => 'Dispatched',
+                        'delivered' => 'Delivered',
                     ])->multiple()
 
 
@@ -252,6 +293,16 @@ class OrderResource extends Resource
                             return redirect()->route('bulkwaybill');
                         })->icon('heroicon-o-printer')->color('warning'),
 
+                    BulkAction::make('Delivered')
+                        ->action(function (Collection $selectedRecords) {
+                            $selectedRecords->each(
+                                fn (Model $selectedRecord) => $selectedRecord->update([
+                                    'status' => 'delivered',
+                                ]),
+                            );
+                        })->icon('heroicon-o-check-badge')->color('success'),     
+
+
                     BulkAction::make('Dispatched')
                         ->action(function (Collection $selectedRecords) {
                             $selectedRecords->each(
@@ -259,7 +310,7 @@ class OrderResource extends Resource
                                     'status' => 'dispatched',
                                 ]),
                             );
-                        })->icon('heroicon-o-truck')->color('success'),
+                        })->icon('heroicon-o-truck')->color('primary'),
 
                     BulkAction::make('Canceled')
                         ->action(function (Collection $selectedRecords) {
@@ -278,6 +329,8 @@ class OrderResource extends Resource
                                 ]),
                             );
                         })->icon('heroicon-o-arrow-path')->color('danger'),
+                     
+                   
 
                     // BulkAction::make('waybill_genarate')
                     //     ->action(function (Collection $selectedRecords) {
@@ -296,6 +349,7 @@ class OrderResource extends Resource
 
                     ExcelExport::make()->withColumns([
                         Column::make('waybill_id')->heading('Waybill Id'),
+                        Column::make('delivery_type')->heading('Delivery Type'),
                         Column::make('id')->heading('Order Number'),
                         Column::make('receiver_name')->heading('Receiver Name'),
                         Column::make('delivery_address')->heading('Delivery Address'),
@@ -319,6 +373,7 @@ class OrderResource extends Resource
                                 return rtrim($description, ', ');
                             }),
                         Column::make('actual_value')->heading('Actual Value'),
+                        Column::make('note')->heading('Note'),
                     ])
                 ])
 
@@ -345,4 +400,24 @@ class OrderResource extends Resource
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
+
+
+    public static function generateInternalOrderId()
+    {
+        // Retrieve the latest order with type 'internal'
+        $latestOrder = Order::where('delivery_type', 'internel')
+                            ->orderBy('waybill_id', 'desc')
+                            ->first();
+        if ($latestOrder) {
+            // Extract the numeric part from the latest order ID
+            $latestOrderId = $latestOrder->waybill_id;
+            // Increment the numeric part
+            $newOrderId = $latestOrderId + 1;
+        } else {
+            // Start from 1 if no internal orders exist
+            $newOrderId = 1;
+        }
+        return $newOrderId;
+    }
+
 }
