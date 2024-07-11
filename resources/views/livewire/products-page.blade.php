@@ -162,7 +162,7 @@
 
 
                 </div>
-                <div class="flex justify-center">
+                <div class="flex justify-center pt-8">
                     {{ $productsQuery->links() }}
                 </div>
             </div>
