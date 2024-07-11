@@ -218,6 +218,7 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')->label('Order ID')->searchable(),
                 TextColumn::make('branch.name'),
 
                 TextColumn::make('delivery_type')->searchable()->label('Delivery Type 🛵')->formatStateUsing(function($state)
