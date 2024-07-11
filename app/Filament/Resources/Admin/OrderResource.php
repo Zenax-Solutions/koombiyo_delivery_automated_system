@@ -265,6 +265,7 @@ class OrderResource extends Resource
                         'delivered' => 'heroicon-o-check-badge',
                     }),
                 TextColumn::make('note')->limit(30)->label('Note 👩‍🦰'),
+                TextColumn::make('created_at')->label('Created At')->dateTime(),
             ])
             ->filters([
                 DateRangeFilter::make('created_at'),
