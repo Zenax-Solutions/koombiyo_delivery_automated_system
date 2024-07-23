@@ -1,5 +1,7 @@
 <div>
 
+@if($getState()->count() > 1
+
     @foreach ($getState() as $data)
         @php
             $product = \App\Models\Product::find($data['product_id']);
@@ -10,5 +12,6 @@
             ({{ $data['size'] }})
             X {{ $data['quantity'] }}{{ !$loop->last ? ',' : '' }}</span>
     @endforeach
+ @endif
 
 </div>
