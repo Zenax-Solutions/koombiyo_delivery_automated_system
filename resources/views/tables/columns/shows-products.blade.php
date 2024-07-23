@@ -1,6 +1,6 @@
 <div>
 
-@if($getState()->count() > 1)
+@if($getState() != null)
 
     @foreach ($getState() as $data)
         @php
