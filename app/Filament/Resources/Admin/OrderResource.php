@@ -408,10 +408,9 @@ class OrderResource extends Resource
     public static function generateInternalOrderId()
     {
         // Retrieve the latest order with type 'internal'
-        $latestOrder = Order::where('delivery_type', 'internel')
-                            ->orderBy('waybill_id', 'desc')
-                            ->first();
-        if ($latestOrder) {
+        $latestOrder = Order::where('delivery_type', 'internel')->latest()->get()->first();
+
+        if ($latestOrder != null) {
             // Extract the numeric part from the latest order ID
             $latestOrderId = $latestOrder->waybill_id;
             // Increment the numeric part
